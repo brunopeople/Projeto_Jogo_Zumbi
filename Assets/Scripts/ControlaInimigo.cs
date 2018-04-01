@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ControlaInimigo : MonoBehaviour, IMatavel
 {
@@ -9,19 +10,25 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
     private MovimentoPersonagem movimentaInimigo;
     private AnimacaoPersonagem animacaoInimigo;
     private Status statusInimigo;
+    private ControlaInterface scriptControlaInterface;
     public AudioClip SomDeMorte;
     private Vector3 posicaoAleatoria;
     private Vector3 direcao;
     private float contadorVagar;
     private float tempoEntrePosicoesAleatorias = 4;
+    private float porcentagemDeAparecerKit = 0.1f;
+    public GameObject KitMedicoPrefab;
+    public Text ContadorZumbisMorto;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         Jogador = GameObject.FindWithTag("Jogador");
         animacaoInimigo = GetComponent<AnimacaoPersonagem>();
         movimentaInimigo = GetComponent<MovimentoPersonagem>();
         AleatorizarZumbi();
         statusInimigo = GetComponent<Status>();
+        scriptControlaInterface = GameObject.FindObjectOfType(typeof(ControlaInterface)) as ControlaInterface;
     }
 
     void FixedUpdate()
@@ -31,9 +38,9 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
         movimentaInimigo.Rotacionar(direcao);
         animacaoInimigo.Movimentar(direcao.magnitude);
 
-        if(distancia > 15)
+        if (distancia > 15)
         {
-            Vagar ();
+            Vagar();
         }
         else if (distancia > 2.5)
         {
@@ -51,13 +58,13 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
         }
     }
 
-    void Vagar ()
+    void Vagar()
     {
         contadorVagar -= Time.deltaTime;
-        if(contadorVagar <= 0)
+        if (contadorVagar <= 0)
         {
             posicaoAleatoria = AleatorizarPosicao();
-            contadorVagar += tempoEntrePosicoesAleatorias;
+            contadorVagar += tempoEntrePosicoesAleatorias + Random.Range(-1f, 1f);
         }
 
         bool ficouPertoOSuficiente = Vector3.Distance(transform.position, posicaoAleatoria) <= 0.05;
@@ -65,10 +72,10 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
         {
             direcao = posicaoAleatoria - transform.position;
             movimentaInimigo.Movimentar(direcao, statusInimigo.Velocidade);
-        }           
+        }
     }
 
-    Vector3 AleatorizarPosicao ()
+    Vector3 AleatorizarPosicao()
     {
         Vector3 posicao = Random.insideUnitSphere * 10;
         posicao += transform.position;
@@ -77,13 +84,13 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
         return posicao;
     }
 
-    void AtacaJogador ()
+    void AtacaJogador()
     {
         int dano = Random.Range(20, 30);
         Jogador.GetComponent<ControlaJogador>().TomarDano(dano);
     }
 
-    void AleatorizarZumbi ()
+    void AleatorizarZumbi()
     {
         int geraTipoZumbi = Random.Range(1, 28);
         transform.GetChild(geraTipoZumbi).gameObject.SetActive(true);
@@ -92,7 +99,7 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
     public void TomarDano(int dano)
     {
         statusInimigo.Vida -= dano;
-        if(statusInimigo.Vida <= 0)
+        if (statusInimigo.Vida <= 0)
         {
             Morrer();
         }
@@ -102,5 +109,18 @@ public class ControlaInimigo : MonoBehaviour, IMatavel
     {
         Destroy(gameObject);
         ControlaAudio.instancia.PlayOneShot(SomDeMorte);
+        VerificarGeracaoKitMedico(porcentagemDeAparecerKit);
+        scriptControlaInterface.AtualizarQuantidadeZumbisMortos();
     }
+
+    void VerificarGeracaoKitMedico(float porcentagemDeAparecer)
+    {
+        if(Random.value <= porcentagemDeAparecer)
+        {
+            Instantiate(KitMedicoPrefab, transform.position, Quaternion.identity);
+        }
+    }
+
+
 }
+

@@ -12,7 +12,8 @@ public class ControlaInterface : MonoBehaviour {
     public Text TextoTempoDeSobrevivencia;
     public Text TextoPontuacaoMaxima;
     private float tempoPontuacaoSalvo;
-
+    private int quantidadeDeZumbisMortos;
+    private ControlaInterface scriptControlaInterface;
 	// Use this for initialization
 	void Start () {
         scriptControlaJogador = GameObject.FindWithTag("Jogador")
@@ -63,5 +64,12 @@ public class ControlaInterface : MonoBehaviour {
     public void Reiniciar ()
     {
         SceneManager.LoadScene("game");
+    }
+
+    public void AtualizarQuantidadeZumbisMortos()
+    {
+        quantidadeDeZumbisMortos++;
+        ContadorZumbisMorto.text = string.Format("X {0}, ContadorZumbisMorto");
+        
     }
 }
