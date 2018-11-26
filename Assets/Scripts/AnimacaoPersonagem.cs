@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimacaoPersonagem : MonoBehaviour
 {
     private Animator meuAnimator;
+   
 
     void Awake ()
     {
@@ -19,5 +21,10 @@ public class AnimacaoPersonagem : MonoBehaviour
     public void Movimentar (float valorDeMovimento)
     {
         meuAnimator.SetFloat("Movendo", valorDeMovimento);
+    }
+
+    internal void Morrer()
+    {
+        throw new NotImplementedException();
     }
 }
