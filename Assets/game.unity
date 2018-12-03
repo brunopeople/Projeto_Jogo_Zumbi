@@ -189,6 +189,7 @@ GameObject:
   - component: {fileID: 18676909}
   - component: {fileID: 18676908}
   - component: {fileID: 18676913}
+  - component: {fileID: 18676914}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -278,6 +279,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Jogador: {fileID: 1665214584}
+--- !u!114 &18676914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 18676907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26899c8c198bfcd46a8357330ef1e3d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VidaInicial: 100
+  Vida: 0
+  Velocidade: 5
 --- !u!4 &18796323 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4544171000348092, guid: 3f715056abeb9446fb0b5d697e133844,
@@ -8391,6 +8406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7b935624776ea349aad77c2526f3ae0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  KitMedicoPreFab: {fileID: 1060151288946202, guid: 6150c6f66b7034ec5b3672478195682a,
+    type: 2}
 --- !u!195 &1392732349
 NavMeshAgent:
   m_ObjectHideFlags: 0
